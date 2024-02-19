@@ -5,6 +5,16 @@ const app = express();
 
 app.use(express.json());
 
+app.use((req, res, next) => {
+  console.log('Hello from middle ware');
+  next();
+});
+
+app.use((req, res, next) => {
+  req.createdAt = new Date().toISOString();
+  next();
+});
+
 const tours = JSON.parse(fs.readFileSync('./dev-data/data/tours-simple.json'));
 
 // app.get('/', (req, res) => {
@@ -29,14 +39,14 @@ const getTours = (req, res) => {
 
 const postTour = (req, res) => {
   const newId = tours[tours.length - 1]._id + 1;
-  const newTour = { ...req.body, _id: newId };
+  const newTour = { ...req.body, _id: newId, createdAt: req.createdAt };
 
   tours.push(newTour);
   fs.writeFile('./dev-data/data/tours.json', JSON.stringify(tours), (err) => {
     console.log(err.message);
   });
 
-  res.status(201).json({ message: 'Done' });
+  res.status(201).json({});
 };
 
 const getTour = (req, res) => {
