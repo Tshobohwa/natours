@@ -68,7 +68,7 @@ app.patch('/api/v1/tours/:id', (req, res) => {
   });
 });
 
-app.delete('api/v1/tours/:id', (req, res) => {
+app.delete('/api/v1/tours/:id', (req, res) => {
   const id = +req.params.id;
   const tour = tours.find((el) => el.id === id);
   if (!tour)
