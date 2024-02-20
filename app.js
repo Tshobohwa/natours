@@ -94,6 +94,41 @@ const deleteTour = (req, res) => {
   });
 };
 
+const getUsers = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'Internal Server error',
+  });
+};
+
+const postUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'Internal Server error',
+  });
+};
+
+const getUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'Internal Server error',
+  });
+};
+
+const updateUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'Internal Server error',
+  });
+};
+
+const deleteUser = (req, res) => {
+  res.status(500).json({
+    status: 'error',
+    message: 'Internal Server error',
+  });
+};
+
 app.route('/api/v1/tours').get(getTours).post(postTour);
 
 app
@@ -101,6 +136,14 @@ app
   .get(getTour)
   .patch(updateTour)
   .delete(deleteTour);
+
+app.route('/api/v1/users').get(getUsers).post(postUser);
+
+app
+  .route('/api/v1/users/:id')
+  .get(getUser)
+  .patch(updateUser)
+  .delete(deleteUser);
 
 const port = 3000;
 
