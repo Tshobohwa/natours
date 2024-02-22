@@ -1,34 +1,34 @@
-exports.getUsers = (req, res) => {
+exports.getUsers = (_, res) => {
   res.status(500).json({
     status: 'error',
     message: 'Internal Server error',
-  });
-};
+  })
+}
 
-exports.postUser = (req, res) => {
+exports.postUser = (_, res) => {
   res.status(500).json({
     status: 'error',
     message: 'Internal Server error',
-  });
-};
+  })
+}
 
-exports.getUser = (req, res) => {
+exports.getUser = (_, res) => {
   res.status(500).json({
     status: 'error',
     message: 'Internal Server error',
-  });
-};
+  })
+}
 
-exports.updateUser = (req, res) => {
+exports.updateUser = (_, res) => {
   res.status(500).json({
     status: 'error',
     message: 'Internal Server error',
-  });
-};
+  })
+}
 
-exports.deleteUser = (req, res) => {
+exports.deleteUser = (_, res) => {
   res.status(500).json({
     status: 'error',
     message: 'Internal Server error',
-  });
-};
+  })
+}
