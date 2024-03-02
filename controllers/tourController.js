@@ -1,10 +1,20 @@
 const Tour = require('../models/tourModel')
 
-exports.getTours = (req, res) => {
-  res.status(200).json({
-    status: 'success',
-    data: {},
-  })
+exports.getTours = async (req, res) => {
+  try {
+    const tours = await Tour.find()
+    res.status(200).json({
+      status: 'ok',
+      data: {
+        tours,
+      },
+    })
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail to fetch',
+      message: err,
+    })
+  }
 }
 
 exports.postTour = async (req, res) => {
@@ -25,7 +35,23 @@ exports.postTour = async (req, res) => {
   }
 }
 
-exports.getTour = (req, res) => {}
+exports.getTour = async (req, res) => {
+  try {
+    const tour = await Tour.findById(req.params.id)
+
+    res.status(200).json({
+      status: 'ok',
+      data: {
+        tour,
+      },
+    })
+  } catch (err) {
+    res.status(404).json({
+      status: 'fail',
+      message: 'Not found',
+    })
+  }
+}
 
 exports.updateTour = (req, res) => {}
 
