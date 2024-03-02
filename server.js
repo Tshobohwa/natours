@@ -11,23 +11,13 @@ mongoose
     useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
-    useUnifiedTopology: true,
+    // useUnifiedTopology: true,
   })
   .then(() => console.log('database connected'))
   .catch((err) => console.log(err))
 
-const port = 8000
+const port = 3000
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 })
-
-const testTour = new Tour({
-  name: 'Tour du Kasai',
-  price: 250,
-})
-
-testTour
-  .save()
-  .then((res) => console.log(res))
-  .catch((err) => console.log(err))

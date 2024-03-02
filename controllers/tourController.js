@@ -1,16 +1,5 @@
 const Tour = require('../models/tourModel')
 
-exports.checkBody = (req, res, next) => {
-  const { name, price } = req.body
-  if (!name || !price) {
-    return res.status(400).json({
-      status: 'fail',
-      message: 'Invalid tour',
-    })
-  }
-  next()
-}
-
 exports.getTours = (req, res) => {
   res.status(200).json({
     status: 'success',
@@ -18,8 +7,22 @@ exports.getTours = (req, res) => {
   })
 }
 
-exports.postTour = (req, res) => {
-  res.status(201).json({})
+exports.postTour = async (req, res) => {
+  try {
+    const newTour = await Tour.create(req.body)
+
+    res.status(201).json({
+      status: 'created',
+      data: {
+        tour: newTour,
+      },
+    })
+  } catch (err) {
+    res.status(400).json({
+      status: 'rejected',
+      message: err,
+    })
+  }
 }
 
 exports.getTour = (req, res) => {}
