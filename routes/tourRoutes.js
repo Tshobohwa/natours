@@ -1,6 +1,6 @@
 const express = require('express')
 
-const toursController = require('../controllers/toursController')
+const toursController = require('../controllers/tourController')
 
 const router = express.Router()
 
