@@ -2,16 +2,27 @@ const Tour = require('../models/tourModel')
 
 exports.getTours = async (req, res) => {
   try {
-    const tours = await Tour.find()
+    // BUILD QUERY
+    const queryObj = { ...req.query }
+    const excludeFileds = ['page', 'limit', 'sort', 'fields']
+    excludeFileds.forEach((el) => delete queryObj[el])
+
+    const query = Tour.find(queryObj)
+
+    // EXECUTE QUERY
+    const tours = await query
+
+    // SEND RESPONSE
     res.status(200).json({
       status: 'ok',
+      results: tours.length,
       data: {
         tours,
       },
     })
   } catch (err) {
     res.status(404).json({
-      status: 'fail to fetch',
+      status: 'fail',
       message: err,
     })
   }
