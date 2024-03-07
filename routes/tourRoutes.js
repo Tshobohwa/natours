@@ -9,6 +9,7 @@ router
   .get(toursController.aliasTopFiveTours, toursController.getTours)
 
 router.route('/tours-stats').get(toursController.getToursStats)
+router.route('/monthly-plan/:year').get(toursController.getMonthyPlan)
 
 router.route('/').get(toursController.getTours).post(toursController.postTour)
 
