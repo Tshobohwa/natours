@@ -62,6 +62,11 @@ tourSchema.virtual('weeksDuration').get(function () {
   return this.duration / 7
 })
 
+tourSchema.post('save', function (next) {
+  console.log(this)
+  // next()
+})
+
 const Tour = mongoose.model('Tour', tourSchema)
 
 module.exports = Tour
