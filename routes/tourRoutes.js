@@ -8,6 +8,8 @@ router
   .route('/top-5-cheap')
   .get(toursController.aliasTopFiveTours, toursController.getTours)
 
+router.route('/tours-stats').get(toursController.getToursStats)
+
 router.route('/').get(toursController.getTours).post(toursController.postTour)
 
 router
