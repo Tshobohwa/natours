@@ -29,6 +29,15 @@ const tourSchema = new mongoose.Schema(
         message: 'Difficulty can be either easy, medium, or difficult',
       },
     },
+    priceDiscount: {
+      type: Number,
+      validate: {
+        validator: function (val) {
+          return val < this.price
+        },
+        message: 'The price discount must be less than the price',
+      },
+    },
     secret: {
       type: Boolean,
       default: false,
