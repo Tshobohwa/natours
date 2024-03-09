@@ -1,5 +1,6 @@
 const express = require('express')
 const morgan = require('morgan')
+const AppError = require('./utils/appError')
 
 const userRouter = require('./routes/userRoutes')
 const tourRouter = require('./routes/tourRoutes')
@@ -21,9 +22,7 @@ app.use('/api/v1/users', userRouter)
 app.use('/api/v1/tours', tourRouter)
 
 app.all('*', (req, res, next) => {
-  const err = new Error(`Route ${req.originalUrl} not found`)
-  err.statusCode = 404
-  err.status = 'fail'
+  const err = new AppError(`Route ${req.originalUrl} not found`, 404)
   next(err)
 })
 

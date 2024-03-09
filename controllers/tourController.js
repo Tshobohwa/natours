@@ -50,7 +50,6 @@ exports.getTours = async (req, res) => {
       .paginate()
     const tours = await features.query
 
-    // SEND RESPONSE
     res.status(200).json({
       status: 'ok',
       results: tours.length,
