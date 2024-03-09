@@ -7,6 +7,9 @@ const tourSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A tour must have a name'],
       unique: true,
+      trim: true,
+      maxlength: [40, 'A tour name must have less or equal than 40 characters'],
+      minlength: [10, 'A tour name must have more or equal than 10 characters'],
     },
     duration: {
       type: Number,
@@ -16,6 +19,15 @@ const tourSchema = new mongoose.Schema(
     maxGroupSize: {
       type: Number,
       required: [true, 'A tour must have a group size'],
+      min: [2, 'A group size can not be less than 2 people'],
+      max: [10, 'A group size can not be more than 10 people'],
+    },
+    difficulty: {
+      type: String,
+      enum: {
+        values: ['easy', 'medium', 'difficult'],
+        message: 'Difficulty can be either easy, medium, or difficult',
+      },
     },
     secret: {
       type: Boolean,
@@ -24,6 +36,8 @@ const tourSchema = new mongoose.Schema(
     ratingsAverage: {
       type: Number,
       default: 4.5,
+      min: [1, ' A rating can not be less than 1.0'],
+      max: [5, ' A rating can not be greater than 5.0'],
     },
     ratingsQuantity: {
       type: Number,
@@ -79,7 +93,6 @@ tourSchema.pre(/^find/, function (next) {
 
 tourSchema.post(/^find/, function (docs, next) {
   console.log(`query took ${Date.now() - this.start} ms`)
-  // console.log(docs)
   next()
 })
 
