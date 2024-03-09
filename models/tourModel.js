@@ -17,6 +17,10 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       required: [true, 'A tour must have a group size'],
     },
+    secret: {
+      type: Boolean,
+      default: false,
+    },
     ratingsAverage: {
       type: Number,
       default: 4.5,
@@ -65,6 +69,17 @@ tourSchema.virtual('weeksDuration').get(function () {
 tourSchema.post('save', function (next) {
   console.log(this)
   // next()
+})
+
+tourSchema.pre(/^find/, function (next) {
+  this.start = Date.now()
+  this.find({ secret: { $ne: true } })
+  next()
+})
+
+tourSchema.post(/^find/, function (docs, next) {
+  console.log(`query took ${Date.now() - this.start} ms`)
+  next()
 })
 
 const Tour = mongoose.model('Tour', tourSchema)
