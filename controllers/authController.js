@@ -1,3 +1,4 @@
+const { promisify } = require('util')
 const jwt = require('jsonwebtoken')
 const User = require('./../models/userModel')
 const catchAsync = require('../utils/catchAsync')
@@ -37,7 +38,7 @@ exports.login = async (req, res, next) => {
   const user = await User.findOne({ email }).select('+password')
 
   if (!user || !user.correctPassword(password, user.password)) {
-    return next(new AppError('Invalid email or password'))
+    return next(new AppError('Invalid email or password', 401))
   }
 
   // 3) If everyting is ok, send response to client with token
@@ -47,3 +48,38 @@ exports.login = async (req, res, next) => {
     token,
   })
 }
+
+exports.protect = catchAsync(async (req, res, next) => {
+  // Verify token availability
+  let token
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.split(' ')[0] === 'Bearer'
+  ) {
+    token = req.headers.authorization.split(' ')[1]
+  }
+
+  if (!token)
+    return next(
+      new AppError('You are not logged in. Please log in to get access', 401),
+    )
+
+  // 2) verification token
+  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET_KEY)
+
+  // 3) Verify if the user still exists
+  const freshUser = await User.findById(decoded.id)
+
+  if (!freshUser)
+    return next(new AppError('The user of this token no longer exists!'))
+
+  // 4) Check if the password was changed after the token was issued
+  if (freshUser.changedPasswordAfter(decoded.iat)) {
+    return next(
+      new AppError('User recently changed passsword! Please login again.', 401),
+    )
+  }
+  // GRANT ACCESS TO THE CURRENT USER
+  req.currentUser = freshUser
+  next()
+})

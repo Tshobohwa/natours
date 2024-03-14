@@ -21,6 +21,11 @@ const handleErrorInProduction = (err, res) => {
   }
 }
 
+const handleJsonWebTokenError = (err) =>
+  new AppError('Invalid token! Please login again.', 401)
+const handleTokenExpiredError = (err) =>
+  new AppError('Your token has expired! please login again')
+
 const handleErrorInDevelopment = (err, res) => {
   res.status(err.statusCode).json({
     status: err.status,
@@ -42,6 +47,10 @@ module.exports = (err, req, res, next) => {
     let error = { ...err }
     console.log(typeof error)
     if (error.name === 'CastError') error = handleCastErrorBD(error)
+    if (error.name === 'jsonWebTokenError')
+      error = handleJsonWebTokenError(error)
+    if (error.name === 'tokenExpiredError')
+      error = handleTokenExpiredError(error)
 
     // handleErrorInProduction(error, res)
   }
